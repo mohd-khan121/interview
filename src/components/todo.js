@@ -7,7 +7,7 @@ const Todo = () => {
   const [inputData, setInputData] = useState("");
   const [description, setDescription] = useState("");
   const [editMode, setEditMode] = useState(null);
-  const list = useSelector((state) => state.todoReducers.list);
+  //   const list = useSelector((state) => state.todoReducers.list);
   const darkMode = useSelector((state) => state.darkMode);
   const dispatch = useDispatch();
 
@@ -30,6 +30,7 @@ const Todo = () => {
         darkMode ? "bg-gray-800" : "bg-gray-100"
       } rounded`}
     >
+      -
       <div
         className={`text-center mb-4 ${darkMode ? "text-white" : "text-black"}`}
       >
