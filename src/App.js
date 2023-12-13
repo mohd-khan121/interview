@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Todo from "./components/todo";
+import { useSelector } from "react-redux";
+import DarkModeToggle from "./components/DarkModeToggle";
 
-function App() {
+const App = () => {
+  const darkMode = useSelector((state) => state.darkMode);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className={`min-h-screen flex items-center justify-center ${
+        darkMode ? "bg-gray-800" : "bg-gray-100"
+      }`}
+    >
+      <div className={` ${darkMode ? "dark" : ""}`}>
+        <DarkModeToggle />
+        <Todo />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
