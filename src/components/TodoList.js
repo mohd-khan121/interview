@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteTodo } from "../actions";
+import { deleteTodo, toggleTodoCompleted } from "../actions";
+
 const TodoList = ({
   editMode,
   handleEdit,
@@ -36,7 +37,13 @@ const TodoList = ({
               key={elem.id}
               className={`flex-shrink-0 flex-grow-0 w-64 m-4 p-4 border rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 ${
                 editMode === elem.id ? "bg-yellow-200" : ""
-              } ${darkMode ? "bg-gray-800 text-white" : "bg-white text-black"}`}
+              } ${
+                elem.completed
+                  ? "bg-gray-300"
+                  : darkMode
+                  ? "bg-gray-800 text-white"
+                  : "bg-white text-black"
+              }`}
             >
               {editMode === elem.id ? (
                 <>
@@ -109,6 +116,12 @@ const TodoList = ({
                   </div>
                 </>
               )}
+              <input
+                type="checkbox"
+                checked={elem.completed}
+                onChange={() => dispatch(toggleTodoCompleted(elem.id))}
+                className="mt-2"
+              />
             </div>
           ))}
         </div>

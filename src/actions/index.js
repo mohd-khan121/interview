@@ -27,9 +27,15 @@ export const editTodo = (id, title, description) => {
   };
 };
 
-// Added action for toggling dark mode
 export const toggleDarkMode = () => {
   return {
     type: "TOGGLE_DARK_MODE",
+  };
+};
+
+export const toggleTodoCompleted = (id) => {
+  return {
+    type: "TOGGLE_TODO_COMPLETED",
+    id,
   };
 };
