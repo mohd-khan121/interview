@@ -1,13 +1,15 @@
+// Todo.js
+
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, editTodo } from "../actions";
 import TodoList from "./TodoList";
+import "../App.css";
 
 const Todo = () => {
   const [inputData, setInputData] = useState("");
   const [description, setDescription] = useState("");
   const [editMode, setEditMode] = useState(null);
-  //   const list = useSelector((state) => state.todoReducers.list);
   const darkMode = useSelector((state) => state.darkMode);
   const dispatch = useDispatch();
 
@@ -25,37 +27,32 @@ const Todo = () => {
   };
 
   return (
-    <div
-      className={`flex flex-col items-center p-4 ${
-        darkMode ? "bg-gray-800" : "bg-gray-100"
-      } rounded`}
-    >
-      -
-      <div
-        className={`text-center mb-4 ${darkMode ? "text-white" : "text-black"}`}
-      >
+    <div className={`todo-container ${darkMode ? "dark-bg" : "light-bg"}`}>
+      <div className={`${darkMode ? "text-white" : "text-black"}`}>
         <h1 className="text-2xl font-bold">To-Do List</h1>
       </div>
-      <div className="mb-4 w-full">
+      <div className="">
         <input
           type="text"
           placeholder="Title"
-          className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 text-black bg-white"
+          className={`input-field ${darkMode ? "dark-mode" : ""}`}
+          style={{ width: "500px", marginBottom: "20px", padding: "10px" }}
           value={inputData}
           onChange={(event) => setInputData(event.target.value)}
         />
       </div>
-      <div className="mb-4 w-full">
+      <div className="">
         <textarea
           placeholder="Description"
-          className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 text-black bg-white"
+          className={`input-field ${darkMode ? "dark-mode" : ""}`}
+          style={{ width: "500px", marginBottom: "20px", padding: "10px" }}
           value={description}
           onChange={(event) => setDescription(event.target.value)}
         />
       </div>
-      <div className="text-center">
+      <div className="">
         <button
-          className="py-2 px-4 bg-green-500 text-white rounded-full transition duration-300 ease-in-out hover:bg-green-600"
+          className={`button button-green`}
           onClick={() => {
             if (inputData.trim() !== "") {
               dispatch(addTodo(inputData, description));

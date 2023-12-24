@@ -1,6 +1,9 @@
-import React from "react";
+// TodoList.js
+
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTodo, toggleTodoCompleted } from "../actions";
+import "../App.css";
 
 const TodoList = ({
   editMode,
@@ -28,21 +31,28 @@ const TodoList = ({
 
   const chunkedList = chunkArray(list, 3);
 
+  const [expanded, setExpanded] = useState({});
+
+  const handleToggleExpand = (id) => {
+    setExpanded((prevState) => ({ ...prevState, [id]: !prevState[id] }));
+  };
+
+  const getFirstWords = (str, num) => {
+    const words = str.split(" ");
+    return words.slice(0, num).join(" ");
+  };
+
   return (
-    <div className="mt-4">
+    <div>
       {chunkedList.map((chunk, index) => (
-        <div key={index} className="flex overflow-x-auto">
+        <div key={index} style={{ display: "flex", flexWrap: "wrap" }}>
           {chunk.map((elem) => (
             <div
               key={elem.id}
-              className={`flex-shrink-0 flex-grow-0 w-64 m-4 p-4 border rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 ${
-                editMode === elem.id ? "bg-yellow-200" : ""
-              } ${
-                elem.completed
-                  ? "bg-gray-300"
-                  : darkMode
-                  ? "bg-gray-800 text-white"
-                  : "bg-white text-black"
+              className={`todo-card ${
+                darkMode ? "dark-bg-light" : "light-bg"
+              } ${editMode === elem.id ? "edit-mode" : ""} ${
+                elem.completed ? "completed" : ""
               }`}
             >
               {editMode === elem.id ? (
@@ -51,77 +61,78 @@ const TodoList = ({
                     type="text"
                     value={inputData}
                     onChange={(event) => setInputData(event.target.value)}
-                    className={`w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 ${
-                      darkMode
-                        ? "text-white bg-gray-800"
-                        : "text-black bg-white"
-                    }`}
+                    className="edit-input"
                   />
-                  <input
-                    type="text"
+                  <textarea
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
-                    className={`w-full mt-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 ${
-                      darkMode
-                        ? "text-white bg-gray-800"
-                        : "text-black bg-white"
-                    }`}
+                    className="edit-input"
                   />
                   <button
-                    className={`mt-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 ease-in-out`}
                     onClick={() => handleSaveEdit(elem.id)}
+                    className={`button button-save ${
+                      darkMode ? "dark-mode" : ""
+                    }`}
                   >
                     Save
                   </button>
                 </>
               ) : (
                 <>
-                  <h3
-                    className={`text-lg font-semibold ${
-                      darkMode ? "text-white" : "text-black"
-                    }`}
-                  >
-                    {elem.title}
-                  </h3>
-                  <p
-                    className={`text-sm ${
-                      darkMode ? "text-gray-300" : "text-gray-500"
-                    }`}
-                  >
-                    {elem.description}
-                  </p>
-                  <div className="flex mt-2">
+                  <div className={`${darkMode ? "text-white" : "text-black"}`}>
+                    <h3>{elem.title}</h3>
+                  </div>
+                  <div className={`${darkMode ? "text-white" : "text-black"}`}>
+                    <p className="description">
+                      {expanded[elem.id]
+                        ? elem.description
+                        : getFirstWords(elem.description, 10)}
+                      {elem.description.length > 50 && (
+                        <span
+                          className="read-more"
+                          onClick={() => handleToggleExpand(elem.id)}
+                        >
+                          {expanded[elem.id] ? " Read Less" : " Read More"}
+                        </span>
+                      )}
+                    </p>{" "}
+                  </div>
+
+                  <div className="actions">
                     <button
-                      className={`flex-1 px-2 py-1 rounded-md hover:bg-yellow-600 transition duration-300 ease-in-out ${
-                        darkMode
-                          ? "bg-gray-700 text-white"
-                          : "bg-yellow-500 text-white"
-                      }`}
                       onClick={() =>
                         handleEdit(elem.id, elem.title, elem.description)
                       }
+                      className={`button button-edit ${
+                        darkMode ? "dark-mode" : ""
+                      }`}
                     >
                       Edit
                     </button>
                     <button
-                      className={`flex-1 px-2 py-1 ml-2 rounded-md hover:bg-red-600 transition duration-300 ease-in-out ${
-                        darkMode
-                          ? "bg-red-700 text-white"
-                          : "bg-red-500 text-white"
-                      }`}
                       onClick={() => dispatch(deleteTodo(elem.id))}
+                      className={`button button-delete ${
+                        darkMode ? "dark-mode" : ""
+                      }`}
                     >
                       Delete
                     </button>
                   </div>
                 </>
               )}
-              <input
-                type="checkbox"
-                checked={elem.completed}
-                onChange={() => dispatch(toggleTodoCompleted(elem.id))}
-                className="mt-2"
-              />
+              {!editMode && (
+                <div className="checkbox-container">
+                  <input
+                    type="checkbox"
+                    checked={elem.completed}
+                    onChange={() => dispatch(toggleTodoCompleted(elem.id))}
+                    className="checkbox"
+                  />
+                  <p className={`${darkMode ? "text-white" : "text-black"}`}>
+                    {elem.completed ? "Mark as not done" : "Mark as done"}
+                  </p>
+                </div>
+              )}
             </div>
           ))}
         </div>

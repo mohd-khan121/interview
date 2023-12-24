@@ -7,11 +7,7 @@ const App = () => {
   const darkMode = useSelector((state) => state.darkMode);
 
   return (
-    <div
-      className={`min-h-screen flex items-center justify-center ${
-        darkMode ? "bg-gray-800" : "bg-gray-100"
-      }`}
-    >
+    <div className={`${darkMode ? "bg-gray-800" : "bg-gray-100"}`}>
       <div className={` ${darkMode ? "dark" : ""}`}>
         <DarkModeToggle />
         <Todo />
