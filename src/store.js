@@ -1,7 +1,6 @@
 import { createStore, combineReducers } from "redux";
 import todoReducers from "./reducer/todoReducers";
 
-// Load state from localStorage
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem("todoState");
@@ -14,14 +13,11 @@ const loadState = () => {
   }
 };
 
-// Save state to localStorage
 const saveState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
     localStorage.setItem("todoState", serializedState);
-  } catch (err) {
-    // Handle errors here
-  }
+  } catch (err) {}
 };
 
 const darkModeReducer = (state = false, action) => {
@@ -38,12 +34,8 @@ const rootReducer = combineReducers({
   darkMode: darkModeReducer,
 });
 
-const store = createStore(
-  rootReducer,
-  loadState() // Load initial state from localStorage
-);
+const store = createStore(rootReducer, loadState());
 
-// Subscribe to store changes and save to localStorage
 store.subscribe(() => {
   saveState(store.getState());
 });

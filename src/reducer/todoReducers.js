@@ -54,7 +54,6 @@ const todoReducers = (state = initialState, action) => {
           : elem
       );
 
-      // Sort the list based on completion status
       const sortedList = updatedListWithCompletion.sort((a, b) =>
         a.completed === b.completed ? 0 : a.completed ? 1 : -1
       );
